@@ -84,3 +84,16 @@ export const config = {
 };
 
 export type AppConfig = typeof config;
+
+/** Point every store at a different data folder (used by the offline evals for isolation). */
+export function useDataDir(dir: string): void {
+  const root = path.resolve(dir);
+  Object.assign(config.paths, {
+    dataDir: root,
+    sessionsDir: path.join(root, "sessions"),
+    tracesDir: path.join(root, "traces"),
+    memoryFile: path.join(root, "memory.json"),
+    ledgerFile: path.join(root, "actions.json"),
+    mockStateFile: path.join(root, "mock_provider_state.json"),
+  });
+}

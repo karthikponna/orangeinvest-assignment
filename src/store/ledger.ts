@@ -89,6 +89,14 @@ export class Ledger {
     return Object.values(this.data.actions).find((a) => a.approval_id === approvalId);
   }
 
+  allApprovals(): Approval[] {
+    return Object.values(this.data.approvals);
+  }
+
+  allActions(): ActionRecord[] {
+    return Object.values(this.data.actions);
+  }
+
   inFlightActions(userId: string): ActionRecord[] {
     return Object.values(this.data.actions).filter((a) => a.user_id === userId && a.status === "executing");
   }

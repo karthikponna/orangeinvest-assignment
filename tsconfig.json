@@ -18,5 +18,5 @@
       "@core/*": ["./src/*"]
     }
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts", "evals/**/*.ts"]
 }

@@ -1,4 +1,4 @@
-export { config } from "./config";
+export { config, useDataDir } from "./config";
 export * from "./types";
 export { ErrandApp, createDeps, type AppDeps, type RunHooks } from "./orchestrator";
 export { AnthropicLLMClient, type LLMClient, type LLMRequest, type LLMResponse } from "./agent/llm";

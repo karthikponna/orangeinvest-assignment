@@ -478,6 +478,19 @@ export class MockProviderService {
     return b ? { ...this.publicBooking(b), user_id: b.user_id } : undefined;
   }
 
+  /** Simulates the 10-minute hold running out. */
+  expireHold(holdId: string) {
+    const h = this.state.holds[holdId];
+    if (!h) throw new ToolError("not_found", `Hold ${holdId} not found`);
+    h.expires_at = new Date(Date.now() - 1000).toISOString();
+    this.persist();
+  }
+
+  /** Raw booking records, including the hold each booking came from. */
+  allBookings(): MockBooking[] {
+    return Object.values(this.state.bookings).map((b) => ({ ...b }));
+  }
+
   simulationState() {
     return {
       queued_book_outcomes: [...this.state.forced_book_outcomes],

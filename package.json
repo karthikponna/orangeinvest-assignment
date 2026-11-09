@@ -12,6 +12,7 @@
     "server": "bun run apps/server/src/index.ts",
     "web": "cd apps/web && bunx vite",
     "typecheck": "tsc --noEmit -p tsconfig.json && turbo run typecheck",
+    "evals": "bun test evals",
     "reset-data": "rm -rf data"
   },
   "dependencies": {
