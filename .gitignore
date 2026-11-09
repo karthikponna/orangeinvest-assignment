@@ -1,0 +1,6 @@
+node_modules/
+.turbo/
+data/
+dist/
+.env
+.DS_Store

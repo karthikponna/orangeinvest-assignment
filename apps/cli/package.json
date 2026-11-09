@@ -1,0 +1,9 @@
+{
+  "name": "@errand/cli",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "bun run src/index.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  }
+}
