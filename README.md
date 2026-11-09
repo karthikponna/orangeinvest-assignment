@@ -1,61 +1,6 @@
 # Errand Agent
 
-```mermaid
-flowchart LR
-    UM[user msg] --> INT{"intent<br/>(LLM classifier,<br/>first msg only)<br/>book / reschedule / cancel / memory"}
-    INT -- no --> ARQ[ask relevant qns]
-    ARQ -.-> UM
-    INT -- yes --> CTX
-
-    CTX["Context builder<br/>relevant memories + recent chat<br/>within token budget<br/>(skip forgotten / unconfirmed)"]:::new
-    MEM[("Memory store<br/>preferences<br/>explicit vs inferred")]:::new
-    MEM --> CTX
-    CTX --> AGENT
-
-    subgraph AGENT["Agent (Claude loop, limits: max turns / tool calls / time)"]
-        direction LR
-        UR[update_request]
-        SP[search_providers]
-        GP["get_provider<br/>(reviews = untrusted data)"]
-        HS[hold_slot]
-        LB[list_bookings]
-        GBS[get_booking_status]
-        MT["save / forget / list memory"]
-        REQ["request_approval<br/>book / cancel / reschedule<br/>(LLM cannot execute)"]:::new
-    end
-
-    AGENT <-->|if missing info asks<br/>questions to user| USER[user]
-
-    HS -->|hold_id + real price| SHOW["Show provider / slot / price<br/>Confirm? (yes / no)"]:::new
-    SHOW --> USER
-    USER -->|"yes (matched by code)"| REC["Save approval record<br/>hold_id, provider, slot, price"]:::new
-    REQ --> SHOW
-    REC --> GATE{"APPROVAL GATE (code)<br/>request == approval?<br/>hold not expired?"}:::new
-    GATE -- mismatch / price changed --> SHOW
-
-    GATE -- match --> KEY["Generate idempotency_key<br/>save to ledger BEFORE calling"]:::new
-    KEY --> BOOK["book(hold_id, key)<br/>runs in CODE"]:::new
-
-    BOOK -- success --> VERIFY["Verify: booking exists<br/>save booking_id to ledger"]:::new
-    BOOK -- timeout --> STATUS["get_booking_status(key)<br/>CODE, no LLM"]:::new
-    STATUS -- booked --> VERIFY
-    STATUS -- not booked --> RETRY{"hold valid &<br/>retries left?"}:::new
-    RETRY -- yes, same key --> BOOK
-    RETRY -- hold expired --> HS
-    RETRY -- no retries left --> FAIL["Clear failure msg<br/>nothing booked"]:::new
-    BOOK -- slot_taken --> AGENT
-
-    VERIFY --> DONE["Booked ✅ shown to user"]:::new
-
-    PROV["Simulated event:<br/>provider cancelled"]:::new -.->|proactive poll, no user prompt| AGENT
-
-    AGENT --> TRACE["session wise timestamp json files<br/>data/sessions + data/traces"]
-    GATE -.-> TRACE
-    BOOK -.-> TRACE
-    STATUS -.-> TRACE
-
-    classDef new fill:#ffe0b2,stroke:#e65100,color:#000
-```
+![Project architecture](docs/images/architecture.png)
 
 Chat agent (CLI and web) that arranges home-service errands — plumbing, electrical, AC servicing — against a local
 mock provider platform. Built with Bun, TypeScript and the Anthropic SDK.
