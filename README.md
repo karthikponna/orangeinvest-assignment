@@ -2,6 +2,8 @@
 
 ![Project architecture](docs/images/architecture.png)
 
+[demo](https://youtu.be/GytbNR69ME8)
+
 Chat agent (CLI and web) that arranges home-service errands — plumbing, electrical, AC servicing — against a local
 mock provider platform. Built with Bun, TypeScript and the Anthropic SDK.
 
@@ -81,3 +83,4 @@ Writes the eval table to `evals/results.md` (+ `results.json`) and the timeout-a
 - **End-to-end trace with timeout-after-success** — real Claude run: [`evals/artifacts/timeout-after-success.real-claude.trace.jsonl`](evals/artifacts/timeout-after-success.real-claude.trace.jsonl) · scripted eval run: [`evals/artifacts/timeout-after-success.trace.jsonl`](evals/artifacts/timeout-after-success.trace.jsonl) · annotated excerpt in the [design note](docs/DESIGN.md)
 - **AI coding assistant transcript** — [`docs/AI_TRANSCRIPT.md`](docs/AI_TRANSCRIPT.md)
 - [Things while doing assignment](https://app.notion.com/p/things-while-doing-assignment-41317b97a98480f99415fba25d613ef8?source=copy_link)
+- [demo](https://youtu.be/GytbNR69ME8)
